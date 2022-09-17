@@ -20,7 +20,7 @@ st.subheader('Dashboard')
 # create blank DataFrame
 df_trip = pd.DataFrame(columns=['path', 'last_pos', 'icon_data', 'timestamps'], data=None)
 
-ICON_URL = 'https://raw.githubusercontent.com/TimofeevAlex/ZurichHack/main/container.png'
+ICON_URL = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/container.png'
 icon_data = {
   "url": ICON_URL,
   "width": 128,
