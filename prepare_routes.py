@@ -1,8 +1,8 @@
+import copy
 import pandas as pd
 import numpy as np
 import datetime
 import random
-import plotly.graph_objects as go
 
 
 def preprocess_orders(df_bestellu, df_raw):
@@ -31,7 +31,7 @@ def trip_match(imo_nr, date_start, date_finish, df_shiptrac):
     return df_shiptrac[(df_shiptrac.imo_number == imo_nr) & (df_shiptrac.date_datetime >= date_start) & (df_shiptrac.date_datetime <= date_finish)]
 
 
-def prepare_routes(as_df=False):
+def prepare_routes(upsample=False):
     df_bestellu = pd.read_csv('data/gis_opex_international_bestellu.csv', sep=';', error_bad_lines=False)
     df_raw = pd.read_csv('data/gis_opex_international_raw.csv', sep=';', error_bad_lines=False)
     df_shiptrac = pd.read_csv('data/gis_opex_international_shiptrac.csv', sep=';', error_bad_lines=False)
@@ -39,6 +39,7 @@ def prepare_routes(as_df=False):
     df_bestellu_plus_raw = preprocess_orders(df_bestellu, df_raw)
     df_shiptrac = preprocess_shiptrac(df_shiptrac)
     routes = []
+    upsampled_routes = []
     names = set()
     for ind in range(1, len(df_bestellu_plus_raw), 10):
         # Pipeline
@@ -68,12 +69,19 @@ def prepare_routes(as_df=False):
         # Draw routes, drop duplicated routes
         if route_info.imo_nr not in names:
             names.add(route_info.imo_nr)
-            route = {"path": long_lat, "in_danger": in_danger, "desc": desc, "name": route_info.imo_nr}
+            route = {"path": long_lat.tolist(), "in_danger": in_danger, "desc": desc, "name": route_info.imo_nr}
+            if upsample:
+                xs = [lon for lon, _ in route['path']]
+                ys = [lat for _, lat in route['path']]
+                upsampled_path = []
+                for i in range(1, len(xs)):
+                    interp_x = np.linspace(xs[i - 1], xs[i], 5)
+                    interp_y = np.linspace(ys[i - 1], ys[i], 5)
+                    # interp_y = np.interp(interp_x, [xs[i - 1], xs[i]], [ys[i - 1], ys[i]])
+                    upsampled_path.extend([[x, y] for x, y in zip(interp_x, interp_y)])
+                upsampled_route = copy.deepcopy(route)
+                upsampled_route['path'] = upsampled_path
+                upsampled_routes.append(upsampled_route)
             routes.append(route)
-    if as_df:
-        routes_df = pd.DataFrame(columns=['name', 'path'])
-        for route in routes:
-            routes_df = routes_df.append({'name': route['name'], 'path': route['path']}, ignore_index=True)
-        routes_df = routes_df.set_index('name')
-        return routes_df
-    return routes
+        
+    return routes, upsampled_routes
