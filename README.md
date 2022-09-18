@@ -1,8 +1,4 @@
-# cloudrun-mobility-dashboard
-A lightweight real-time dashboard for mobility data. 
-
-![demo](./dashboard.gif)
-
+# Smart Supply Chains
 ## Prerequisites
 - Create a [Google Cloud project](https://cloud.google.com/docs/get-started)
 - Create a [Firestore in Native Mode](https://cloud.google.com/firestore/docs/create-database-server-client-library#create_a_in_native_mode_database)

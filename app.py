@@ -5,9 +5,6 @@ import pandas as pd
 import pydeck as pdk
 import matplotlib.pyplot as plt
 
-import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] ='C:/Users/tihon/Downloads/hackzurich22-4093-47107959b1ae.json'
-
 
 db = firestore.Client()
 db_paths = firestore.Client()
@@ -51,20 +48,20 @@ URL_thunderstorms = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyC
 URL_strike = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/strike.png'
 URL_civilunrest = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/civilunrest.jpg'
 URL_lockdown = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/lockdown.png'
-URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/war.png'
+URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/typhoon.png'#'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/war.png'
 URL_blackout = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/blackout.png'
 URL_cyberattack = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/cyberattack.png'
 
-icon_data_fogs={"url":URL_fogs,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_gales={"url":URL_gales,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_hvyrains={"url":URL_hvyrains,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_thunderstorms={"url":URL_thunderstorms,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_strike={"url":URL_strike,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_civilunrest={"url":URL_civilunrest,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_lockdown={"url":URL_lockdown,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_war={"url":URL_war,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_blackout={"url":URL_blackout,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
-icon_data_cyberattack={"url":URL_cyberattack,"width": 128,"height": 128,"anchorY": 96,"anchorX": 64}
+icon_data_fogs={"url":URL_fogs,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_gales={"url":URL_gales,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_hvyrains={"url":URL_hvyrains,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_thunderstorms={"url":URL_thunderstorms,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_strike={"url":URL_strike,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_civilunrest={"url":URL_civilunrest,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_lockdown={"url":URL_lockdown,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_war={"url":URL_war,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_blackout={"url":URL_blackout,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_cyberattack={"url":URL_cyberattack,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
 
 fogs_layer = pdk.Layer(
   'IconLayer',
