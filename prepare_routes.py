@@ -1,3 +1,6 @@
+import random
+from collections import defaultdict
+
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
@@ -284,7 +287,37 @@ def get_routes_and_risks():
     return df_bestellu, df_shiptrac, df_bestellu_plus_raw, all_risks
 
 
-def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw, all_risks, cur_datetime, simulate=False, upsample=False):
+def generate_risks(long_lat_datetime, n_risks=None):
+    # Generate risks for particular route
+    possible_risks_reasons = ["strike", "typhoon", "storm", "gales"]
+
+    if not n_risks:
+        n_risks = random.randint(15, 20)
+
+    risks = defaultdict(list)
+    for _ in range(n_risks):
+        risk_reason = random.choice(possible_risks_reasons)
+        if risk_reason in ["strike"]:
+            risk_locations = [long_lat_datetime[0], long_lat_datetime[-1]]
+        else:
+            risk_locations = long_lat_datetime[0:-1]
+
+        in_danger = random.choices([True, False], weights=[1, 5], k=1)[0]
+        risk_location = random.choice(risk_locations)
+        long, lat, risk_datetime = risk_location
+
+        if in_danger:
+            risks[risk_reason].append((risk_datetime.strftime(format="%Y%m%d%H%M%S"),
+                                       lat + random.randint(-1, 1), long + random.randint(-1, 1)))
+        else:
+            risks[risk_reason].append((risk_datetime.strftime(format="%Y%m%d%H%M%S"),
+                                   lat + random.randint(-30, 30), long + random.randint(-30, 30)))
+
+    return risks
+
+
+def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
+                                 all_risks, cur_datetime, simulate=False, upsample=False):
     routes = []
     upsampled_routes = []
     names = set()
@@ -314,6 +347,9 @@ def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
         long_lat_datetime = res[["longitude", "latitude", "date_datetime"]].values
 
         # Annotate routes with in_danger
+        if simulate:
+            all_risks = generate_risks(long_lat_datetime)
+
         in_danger = False
         desc = ""
         for key in all_risks.keys():
@@ -348,5 +384,5 @@ def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
 if __name__ == "__main__":
     cur_datetime = datetime.datetime.now()
     df_bestellu, df_shiptrac, df_bestellu_plus_raw, all_risks = get_routes_and_risks()
-    routes, upsampled_routes, risks = get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw, all_risks, cur_datetime)
+    routes, upsampled_routes, risks = get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw, all_risks, cur_datetime, simulate=True)
     plot_routes(routes, risks)
