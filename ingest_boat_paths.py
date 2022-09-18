@@ -30,7 +30,7 @@ try:
         print(ts)
         cur_datetime = datetime.datetime.now()
         routes, upsampled_routes, risks = get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
-                                                                       all_risks, cur_datetime, upsample=True, simulate=False)
+                                                                       all_risks, cur_datetime, upsample=True, simulate=True)
         if not offset_ts:
             offset_ts = [np.random.randint(0, len(route["path"])) for route in (upsampled_routes if upsampled_routes else routes)]
             scale_ts = [np.random.randint(1, 3) for route in (upsampled_routes if upsampled_routes else routes)]
