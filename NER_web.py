@@ -89,7 +89,7 @@ def get_web_risks():
         for key in places[event].keys():
             location = geolocator.geocode(key)
             try:
-                new_key = str((location.latitude, location.longitude))
+                new_key = (location.latitude, location.longitude)
             except:
                 new_key = None
             new_keys.append(new_key)
