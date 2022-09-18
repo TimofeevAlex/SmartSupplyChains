@@ -7,6 +7,7 @@ import numpy as np
 import datetime
 import haversine as hs
 import requests
+from NER_web import get_web_risks
 from bs4 import BeautifulSoup
 
 
@@ -143,7 +144,9 @@ def get_nature_risks():
 
 
 def get_human_risks():
-    # get_tweeter_risks() - instead, we, currently, just parse hardcoded data
+
+    # risks from twitter
+    # data = get_tweeter_risks() - instead, we, currently, just parse hardcoded data
     data = {'#strike': {(46.603354, 1.8883335): 27,
                         (39.7837304, -100.445882): 12,
                         (45.9896587, -94.6113288): 23,
@@ -173,6 +176,9 @@ def get_human_risks():
                 (64.6863136, 97.7453061): 22,
                 (39.7837304, -100.445882): 11}
             }
+
+    # Add risks from the web
+    data.update(get_web_risks())
 
     # Structure on the same way as nature risks
     data = {k: list(v.keys()) for k, v in data.items()}

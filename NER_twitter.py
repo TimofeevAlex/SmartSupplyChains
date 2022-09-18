@@ -124,10 +124,8 @@ def get_tweeter_risks():
             if new_key:
                 places[event][new_key] = val
 
-    # Save places according to hashtag
-    with open('data_places.json', 'w') as fp:
-        json.dump(places, fp)
+    return places
 
 
 if __name__ == "__main__":
-    get_tweeter_risks()
+    data_twitter = get_tweeter_risks()
