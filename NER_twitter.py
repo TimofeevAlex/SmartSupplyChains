@@ -29,7 +29,7 @@ def preprocess_tweet(sentence):
 
 def get_tweeter_risks():
 
-    # Authentication
+    # Authentication to Twitter API
     consumerKey = "YourConsumerPublicKey"
     consumerSecret = "YourConsumerPrivateKey"
     bearToken = "YourBearToken"
@@ -40,9 +40,10 @@ def get_tweeter_risks():
     auth.set_access_token(accessToken, accessTokenSecret)
     client = tweepy.Client(bearer_token=bearToken)
 
-    # NER model
+    # NER model: we use default model from spacy library
     beta = spacy.load("en_core_web_sm")
 
+    # hashtags we use to retrieve data from Twitter
     hashtags = [
         '#strike',
         '#civilunrest',
@@ -52,10 +53,12 @@ def get_tweeter_risks():
         '#cyberattack'
     ]
 
+    # Number of tweets we retrieve
     max_results = 100
     limit = 10
     num = max_results * limit
     tweets = {}
+    # Retrieve the tweets with given hashtag
     for hashtag in hashtags:
         query = hashtag + ' -is:retweet lang:en'
         paginator = tweepy.Paginator(
@@ -64,7 +67,8 @@ def get_tweeter_risks():
             max_results=max_results,
             limit=limit
         )
-
+        
+        # Clean tweets before saving them
         cleaned_tweets = []
         for tweet in paginator.flatten():  # Total number of tweets to retrieve
             cleaned_tweets.append(preprocess_tweet(tweet.text))
@@ -73,14 +77,18 @@ def get_tweeter_risks():
     # Initialize Nominatim API for geo positions parcing
     geolocator = Nominatim(user_agent="MyApp")
 
+    # Create places dictionary that consists from the problem (hashtag) and place
     places = {}
     for event in tweets.keys():
         places[event] = {}
         cleaned_tweets = tweets[event]
         for tweet in cleaned_tweets:
+            # Check the sentiment of the tweet
             tb = TextBlob(tweet)
             score = tb.sentiment.polarity
+            # if tweet is negative of neutral then we add the location to our pool
             if score <= 0:
+                # NER is applied on top of the tweet to find the location
                 doc = beta(tweet)
                 loc = None
                 for ent in doc.ents:
@@ -91,7 +99,7 @@ def get_tweeter_risks():
                         except:
                             places[event][loc] = 1
 
-        # delete irrelevent data
+        # delete irrelevent data: statistically insignificant places
         thrsh = int(num * 0.01)  # if number of mentions is less than 1% of tweets
         keys_to_del = []
         for key in places[event].keys():
@@ -100,7 +108,7 @@ def get_tweeter_risks():
         for key in keys_to_del:
             del places[event][key]
 
-        # change from names to coordinates
+        # change from city/country names to Longitude/Latitude
         new_keys = []
         for key in places[event].keys():
             location = geolocator.geocode(key)
@@ -116,6 +124,7 @@ def get_tweeter_risks():
             if new_key:
                 places[event][new_key] = val
 
+    # Save places according to hashtag
     with open('data_places.json', 'w') as fp:
         json.dump(places, fp)
 

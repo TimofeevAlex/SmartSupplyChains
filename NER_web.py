@@ -8,20 +8,27 @@ from geopy.geocoders import Nominatim
 
 def get_web_risks():
 
+    # NER model: we use default model from spacy library
     beta = spacy.load("en_core_web_sm")
 
     def item_search(query):
+        'Returns BS for the given query'
+
+        # Sort search results by date
         params = {
             "pagesize": 10,
             "sort": "date",
             "direction": "DESC",
         }
+        # We take news only from trusted sources. In this setting we take news only from reuters.com
         news = f"https://www.google.com/search?q={query}+site%3Areuters.com"
         html = requests.get(news, params=params).text
         soup = BeautifulSoup(html, 'html.parser')
         return soup
 
     def get_details(url):
+        'Returns text from the page given URL'
+
         html = requests.get(url).text
         soup = BeautifulSoup(html, 'html.parser')
         for script in soup(["script", "style", 'aside', 'noscript', 'meta']):
@@ -29,6 +36,8 @@ def get_web_risks():
         return " ".join(re.split(r'[\n\t]+', soup.get_text()))
 
     def news_crawler(search_query):
+        'Scrapping of pages given search query'
+
         links = []
         contents = []
         try:
@@ -40,20 +49,23 @@ def get_web_risks():
             traceback.print_exc()
         return contents
 
+    # Topics for data
     queries = ['strike', 'cyber+attack', 'blackout', 'embargo', 'civil+unrest']
     contents = {}
     for query in queries:
         content = news_crawler(query)
         contents[query] = content
 
-    # Initialize Nominatim API
+    # Initialize Nominatim API for geo positions parcing
     geolocator = Nominatim(user_agent="MyApp")
 
+    # Create places dictionary that consists from the problem (topic of the news) and place
     places = {}
     for event in contents.keys():
         places[event] = {}
         content = contents[event]
         for c in content:
+            # NER is applied on top of the news to find the relevant locations
             doc = beta(c)
             loc = None
             for ent in doc.ents:
@@ -64,8 +76,8 @@ def get_web_risks():
                     except:
                         places[event][loc] = 1
 
-        # delete irrelevent data
-        thrsh = 3
+        # delete irrelevent data: statistically insignificant places
+        thrsh = 3 # Magic number
         keys_to_del = []
         for key in places[event].keys():
             if places[event][key] <= thrsh:
@@ -73,7 +85,7 @@ def get_web_risks():
         for key in keys_to_del:
             del places[event][key]
 
-        # change from names to coordinates
+        # change from city/country names to Longitude/Latitude
         new_keys = []
         for key in places[event].keys():
             location = geolocator.geocode(key)
@@ -89,6 +101,7 @@ def get_web_risks():
             if new_key:
                 places[event][new_key] = val
 
+    # Save places according to hashtag
     with open('data_places.json', 'w') as fp:
         json.dump(places, fp)
 
