@@ -2,3 +2,7 @@ streamlit
 google-cloud-firestore
 vega-datasets
 pydeck==0.7.1
+spacy
+textblob
+tweepy==4.9.0
+geopy

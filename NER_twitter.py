@@ -1,14 +1,7 @@
-
 import spacy
-from spacy.matcher import Matcher
-from spacy.tokens import Span
-from spacy import displacy
 from textblob import TextBlob
 import tweepy
-import numpy as np
-import nltk
 import re
-import json
 from geopy.geocoders import Nominatim
 
 
@@ -18,8 +11,6 @@ def preprocess_tweet(sentence):
 
     # Remove RT
     sentence = re.sub('RT @\w+: ', " ", sentence)
-
-    # sentence = sen.lower()
 
     # Remove special characters
     sentence = re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", sentence)
@@ -35,13 +26,23 @@ def preprocess_tweet(sentence):
     return sentence
 
 
-def get_tweeter_risks():
+def get_twitter_risks():
 
-    # Tweeter API connection
-    # Hidden from github
+    # Authentication to Twitter API
+    consumerKey = "YourConsumerPublicKey"
+    consumerSecret = "YourConsumerPrivateKey"
+    bearToken = "YourBearToken"
+    accessToken = "YourAppAccessToken"
+    accessTokenSecret = "YourAppAccessTokenSecret"
 
+    auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+    auth.set_access_token(accessToken, accessTokenSecret)
+    client = tweepy.Client(bearer_token=bearToken)
+
+    # NER model: we use default model from spacy library
     beta = spacy.load("en_core_web_sm")
 
+    # hashtags we use to retrieve data from Twitter
     hashtags = [
         '#strike',
         '#civilunrest',
@@ -51,10 +52,12 @@ def get_tweeter_risks():
         '#cyberattack'
     ]
 
+    # Number of tweets we retrieve
     max_results = 100
     limit = 10
     num = max_results * limit
     tweets = {}
+    # Retrieve the tweets with given hashtag
     for hashtag in hashtags:
         query = hashtag + ' -is:retweet lang:en'
         paginator = tweepy.Paginator(
@@ -63,23 +66,28 @@ def get_tweeter_risks():
             max_results=max_results,
             limit=limit
         )
-
+        
+        # Clean tweets before saving them
         cleaned_tweets = []
         for tweet in paginator.flatten():  # Total number of tweets to retrieve
             cleaned_tweets.append(preprocess_tweet(tweet.text))
         tweets[hashtag] = cleaned_tweets
 
-    # Initialize Nominatim API
+    # Initialize Nominatim API for geo positions parcing
     geolocator = Nominatim(user_agent="MyApp")
 
+    # Create places dictionary that consists from the problem (hashtag) and place
     places = {}
     for event in tweets.keys():
         places[event] = {}
         cleaned_tweets = tweets[event]
         for tweet in cleaned_tweets:
+            # Check the sentiment of the tweet
             tb = TextBlob(tweet)
             score = tb.sentiment.polarity
+            # if tweet is negative of neutral then we add the location to our pool
             if score <= 0:
+                # NER is applied on top of the tweet to find the location
                 doc = beta(tweet)
                 loc = None
                 for ent in doc.ents:
@@ -90,7 +98,7 @@ def get_tweeter_risks():
                         except:
                             places[event][loc] = 1
 
-        # delete irrelevent data
+        # delete irrelevent data: statistically insignificant places
         thrsh = int(num * 0.01)  # if number of mentions is less than 1% of tweets
         keys_to_del = []
         for key in places[event].keys():
@@ -99,12 +107,12 @@ def get_tweeter_risks():
         for key in keys_to_del:
             del places[event][key]
 
-        # change from names to coordinates
+        # change from city/country names to Longitude/Latitude
         new_keys = []
         for key in places[event].keys():
             location = geolocator.geocode(key)
             try:
-                new_key = str((location.latitude, location.longitude))
+                new_key = (location.latitude, location.longitude)
             except:
                 new_key = None
             new_keys.append(new_key)
@@ -115,6 +123,8 @@ def get_tweeter_risks():
             if new_key:
                 places[event][new_key] = val
 
+    return places
+
 
 if __name__ == "__main__":
-    get_tweeter_risks()
+    data_twitter = get_twitter_risks()
