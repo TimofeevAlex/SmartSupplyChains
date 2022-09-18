@@ -49,7 +49,7 @@ URL_thunderstorms = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyC
 URL_strike = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/strike.png'
 URL_civilunrest = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/civilunrest.jpg'
 URL_lockdown = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/lockdown.png'
-URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/war.png'
+URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/war.png' 
 URL_blackout = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/blackout.png'
 URL_cyberattack = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/cyberattack.png'
 
@@ -184,7 +184,7 @@ trip_layer = pdk.Layer(
 r = pdk.Deck(
   map_provider="mapbox",
   map_style='mapbox://styles/mapbox/streets-v11',
-  api_keys={'mapbox':'pk.eyJ1IjoidGltb2ZlZXZhbGV4IiwiYSI6ImNsODZlNDY0NjB6NXMzcHMybnVlNmFnMDUifQ.Y_wyQ239E1hmfQrKlXA8Wg'},
+  api_keys={'mapbox':''},
   initial_view_state=pdk.ViewState(
     height=700,
     latitude=20,
