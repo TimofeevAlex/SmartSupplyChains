@@ -1,6 +1,6 @@
 import random
 from collections import defaultdict
-
+import copy
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
@@ -308,7 +308,7 @@ def generate_risks(long_lat_datetime, n_risks=None):
 
         if in_danger:
             risks[risk_reason].append((risk_datetime.strftime(format="%Y%m%d%H%M%S"),
-                                       lat + random.randint(-1, 1), long + random.randint(-1, 1)))
+                                       lat + random.randint(-2, 2), long + random.randint(-2, 2)))
         else:
             risks[risk_reason].append((risk_datetime.strftime(format="%Y%m%d%H%M%S"),
                                    lat + random.randint(-30, 30), long + random.randint(-30, 30)))
@@ -363,10 +363,10 @@ def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
         # Draw routes, drop duplicated routes
         if route_info.imo_nr not in names:
             names.add(route_info.imo_nr)
-            route = {"path": long_lat_datetime.tolist(), "in_danger": in_danger, "desc": desc, "name": f"Ship N{route_info.imo_nr}"}
+            route = {"path": long_lat_datetime.tolist(), "in_danger": in_danger, "desc": desc, "name": f"Ship N{int(route_info.imo_nr)}"}
             if upsample:
-                xs = [lon for lon, _ in route['path']]
-                ys = [lat for _, lat in route['path']]
+                xs = [lon for lon, _, _ in route['path']]
+                ys = [lat for _, lat, _ in route['path']]
                 upsampled_path = []
                 for i in range(1, len(xs)):
                     interp_x = np.linspace(xs[i - 1], xs[i], 5)
