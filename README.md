@@ -1,4 +1,9 @@
 # Smart Supply Chains
+
+Our web app is aimed to assist supply chain managers in their daily work. This includes not only identifying potential risks of delays during goods delivering but also finding the workarounds for such issues to guarantee shelves being full of products loved by the Migros customers. Wide variety of data sources including news, social media and weather services are fused to get the final conclusion about the time security of the route. You can see most severe ones drawn on the world map along with the routes typically used for delivering goods for Swiss citizens.
+
+Please, feel free to play with our [demo](https://mydashboard-cauzu3pgqa-ew.a.run.app/) and try to solve some supply chain problems happening right now in the world!
+
 ## Prerequisites
 - Create a [Google Cloud project](https://cloud.google.com/docs/get-started)
 - Create a [Firestore in Native Mode](https://cloud.google.com/firestore/docs/create-database-server-client-library#create_a_in_native_mode_database)
