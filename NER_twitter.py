@@ -1,12 +1,6 @@
-
 import spacy
-from spacy.matcher import Matcher
-from spacy.tokens import Span
-from spacy import displacy
 from textblob import TextBlob
 import tweepy
-import numpy as np
-import nltk
 import re
 import json
 from geopy.geocoders import Nominatim
@@ -121,6 +115,9 @@ def get_tweeter_risks():
             val = places[event].pop(key)
             if new_key:
                 places[event][new_key] = val
+
+    with open('data_places.json', 'w') as fp:
+        json.dump(places, fp)
 
 
 if __name__ == "__main__":

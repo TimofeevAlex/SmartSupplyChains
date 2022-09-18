@@ -4,13 +4,6 @@ import re
 import traceback
 import json
 import spacy
-from spacy.matcher import Matcher
-from spacy.tokens import Span
-from spacy import displacy
-from textblob import TextBlob
-import tweepy
-import numpy as np
-import nltk
 import re
 import json
 from geopy.geocoders import Nominatim
@@ -21,9 +14,9 @@ def get_web_risks():
 
     def item_search(query):
         params = {
-          "pagesize": 10,
-          "sort": "date",
-          "direction": "DESC",
+            "pagesize": 10,
+            "sort": "date",
+            "direction": "DESC",
         }
         news = f"https://www.google.com/search?q={query}+site%3Areuters.com"
         html = requests.get(news, params=params).text
@@ -60,45 +53,45 @@ def get_web_risks():
 
     places = {}
     for event in contents.keys():
-      places[event] = {}
-      content = contents[event]
-      for c in content:
-        doc = beta(c)
-        loc = None
-        for ent in doc.ents:
-          if ent.label_ == 'GPE':
-            loc = ent.text.lower()
+        places[event] = {}
+        content = contents[event]
+        for c in content:
+            doc = beta(c)
+            loc = None
+            for ent in doc.ents:
+                if ent.label_ == 'GPE':
+                    loc = ent.text.lower()
+                    try:
+                        places[event][loc] += 1
+                    except:
+                        places[event][loc] = 1
+
+        # delete irrelevent data
+        thrsh = 3
+        keys_to_del = []
+        for key in places[event].keys():
+            if places[event][key] <= thrsh:
+                keys_to_del.append(key)
+        for key in keys_to_del:
+            del places[event][key]
+
+        # change from names to coordinates
+        new_keys = []
+        for key in places[event].keys():
+            location = geolocator.geocode(key)
             try:
-              places[event][loc] += 1
+                new_key = str((location.latitude, location.longitude))
             except:
-              places[event][loc] = 1
+                new_key = None
+            new_keys.append(new_key)
 
-      # delete irrelevent data
-      thrsh = 3
-      keys_to_del = []
-      for key in places[event].keys():
-        if places[event][key] <= thrsh:
-          keys_to_del.append(key)
-      for key in keys_to_del:
-        del places[event][key]
+        old_keys = list(places[event].keys())
+        for key, new_key in zip(old_keys, new_keys):
+            val = places[event].pop(key)
+            if new_key:
+                places[event][new_key] = val
 
-      # change from names to coordinates
-      new_keys = []
-      for key in places[event].keys():
-        location = geolocator.geocode(key)
-        try:
-          new_key = str((location.latitude, location.longitude))
-        except:
-          new_key = None
-        new_keys.append(new_key)
-
-      old_keys = list(places[event].keys())
-      for key, new_key in zip(old_keys, new_keys):
-        val = places[event].pop(key)
-        if new_key:
-          places[event][new_key] = val
-
-    with open('data.json', 'w') as fp:
+    with open('data_places.json', 'w') as fp:
         json.dump(places, fp)
 
 
