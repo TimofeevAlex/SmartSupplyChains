@@ -7,3 +7,4 @@ textblob
 tweepy==4.9.0
 geopy
 matplotlib
+beautifulsoup4
