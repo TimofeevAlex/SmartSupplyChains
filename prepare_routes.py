@@ -302,7 +302,7 @@ def generate_risks(long_lat_datetime, n_risks=None):
         else:
             risk_locations = long_lat_datetime[0:-1]
 
-        in_danger = random.choices([True, False], weights=[1, 5], k=1)[0]
+        in_danger = random.choices([True, False], weights=[1, 15], k=1)[0]
         risk_location = random.choice(risk_locations)
         long, lat, risk_datetime = risk_location
 
@@ -326,7 +326,7 @@ def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
             df_bestellu_plus_raw.datum_abgang <= cur_datetime)]
 
     print(f"There were {len(df_bestellu_plus_raw)} active shipments on {cur_datetime}")
-    for ind in range(1, len(df_bestellu_plus_raw), 1):
+    for ind in range(1, len(df_bestellu_plus_raw), 10):
 
         # Find routes ("imo_nr", "pol_name", "datum_abgang", "pod_name", "datum_ankunft", "bb_name")
         route_info = df_bestellu_plus_raw.iloc[ind][

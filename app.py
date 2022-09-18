@@ -113,6 +113,7 @@ def main():
       if doc['in_danger']:
         st.sidebar.error(f'{path_ind}: ' + doc['desc'], icon="🚨") # TODO: Add time
     trip_layer.data = df_paths
+    # Boats
     doc_list = q.get()
     for doc in doc_list:
       vehicle_ind = doc['id']
@@ -125,7 +126,6 @@ def main():
       df_trip.at[vehicle_ind, 'path'] = _path
       df_trip.at[vehicle_ind, 'last_pos'] = doc['lonlat']
       df_trip.at[vehicle_ind, 'icon_data'] = icon_data
-
       _timestamps = df_trip.at[vehicle_ind, 'timestamps']
       if type(_timestamps) != list:
         _timestamps = []
