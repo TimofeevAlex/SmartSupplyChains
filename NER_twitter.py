@@ -19,8 +19,6 @@ def preprocess_tweet(sentence):
     # Remove RT
     sentence = re.sub('RT @\w+: ', " ", sentence)
 
-    # sentence = sen.lower()
-
     # Remove special characters
     sentence = re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", sentence)
 
@@ -37,9 +35,18 @@ def preprocess_tweet(sentence):
 
 def get_tweeter_risks():
 
-    # Tweeter API connection
-    # Hidden from github
+    # Authentication
+    consumerKey = "YourConsumerPublicKey"
+    consumerSecret = "YourConsumerPrivateKey"
+    bearToken = "YourBearToken"
+    accessToken = "YourAppAccessToken"
+    accessTokenSecret = "YourAppAccessTokenSecret"
 
+    auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+    auth.set_access_token(accessToken, accessTokenSecret)
+    client = tweepy.Client(bearer_token=bearToken)
+
+    # NER model
     beta = spacy.load("en_core_web_sm")
 
     hashtags = [
@@ -69,7 +76,7 @@ def get_tweeter_risks():
             cleaned_tweets.append(preprocess_tweet(tweet.text))
         tweets[hashtag] = cleaned_tweets
 
-    # Initialize Nominatim API
+    # Initialize Nominatim API for geo positions parcing
     geolocator = Nominatim(user_agent="MyApp")
 
     places = {}
