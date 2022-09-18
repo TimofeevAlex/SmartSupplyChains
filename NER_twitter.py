@@ -2,7 +2,6 @@ import spacy
 from textblob import TextBlob
 import tweepy
 import re
-import json
 from geopy.geocoders import Nominatim
 
 
@@ -27,7 +26,7 @@ def preprocess_tweet(sentence):
     return sentence
 
 
-def get_tweeter_risks():
+def get_twitter_risks():
 
     # Authentication to Twitter API
     consumerKey = "YourConsumerPublicKey"
@@ -128,4 +127,4 @@ def get_tweeter_risks():
 
 
 if __name__ == "__main__":
-    data_twitter = get_tweeter_risks()
+    data_twitter = get_twitter_risks()

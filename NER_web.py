@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import re
 import traceback
-import json
 import spacy
 from geopy.geocoders import Nominatim
 

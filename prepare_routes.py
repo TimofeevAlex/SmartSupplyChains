@@ -8,6 +8,7 @@ import datetime
 import haversine as hs
 import requests
 from NER_web import get_web_risks
+from NER_twitter import get_twitter_risks
 from bs4 import BeautifulSoup
 
 
@@ -146,7 +147,7 @@ def get_nature_risks():
 def get_human_risks():
 
     # risks from twitter
-    # data = get_tweeter_risks() - instead, we, currently, just parse hardcoded data
+    # data = get_twitter_risks() - instead, we, currently, just parse hardcoded data
     data = {'#strike': {(46.603354, 1.8883335): 27,
                         (39.7837304, -100.445882): 12,
                         (45.9896587, -94.6113288): 23,
