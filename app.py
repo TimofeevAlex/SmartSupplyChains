@@ -13,7 +13,7 @@ q = Queue()
 q_paths = Queue()
 q_cats = Queue()
 
-st.set_page_config(page_title="Smart Supply Chains", layout="wide", page_icon='letter-m.png')
+st.set_page_config(page_title="Smart Supply Chains", layout="wide", page_icon='icons/letter-m.png')
 # st.title('Smart Supply Chains')
 st.subheader('Dashboard')
 st.sidebar.title("Alerts")
@@ -33,7 +33,7 @@ df_blackout = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
 df_cyberattack = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
 
 
-ICON_URL = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/container.png'
+ICON_URL = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/container.png'
 icon_data = {
   "url": ICON_URL,
   "width": 128,
@@ -41,16 +41,17 @@ icon_data = {
   "anchorY": 96,
   "anchorX": 64
 }
-URL_fogs = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/fog.png'
-URL_gales = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/gale.png'
-URL_hvyrains = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/hvrain.png'
-URL_thunderstorms = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/typhoon.png'
-URL_strike = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/strike.png'
-URL_civilunrest = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/civilunrest.jpg'
-URL_lockdown = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/lockdown.png'
-URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/war.png'
-URL_blackout = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/blackout.png'
-URL_cyberattack = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/cyberattack.png'
+
+URL_fogs = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/fog.png'
+URL_gales = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/gale.png'
+URL_hvyrains = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/hvrain.png'
+URL_thunderstorms = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/typhoon.png'
+URL_strike = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/strike.png'
+URL_civilunrest = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/civilunrest.jpg'
+URL_lockdown = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/lockdown.png'
+URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/war.png'
+URL_blackout = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/blackout.png'
+URL_cyberattack = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/cyberattack.png'
 
 icon_data_fogs={"url":URL_fogs,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
 icon_data_gales={"url":URL_gales,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
@@ -198,9 +199,6 @@ rt_map = st.pydeck_chart(r)
 
 # col2 = st.columns(1)[0]
 
-# col2.subheader('Alerts:')
-# with col2:
-#   snap = st.empty()
 
 
 # Create a callback on_snapshot function to capture changes
