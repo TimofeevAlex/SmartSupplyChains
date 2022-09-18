@@ -6,3 +6,4 @@ spacy
 textblob
 tweepy==4.9.0
 geopy
+beautifulsoup4
