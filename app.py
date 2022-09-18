@@ -48,7 +48,7 @@ URL_thunderstorms = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyC
 URL_strike = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/strike.png'
 URL_civilunrest = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/civilunrest.jpg'
 URL_lockdown = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/lockdown.png'
-URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/typhoon.png'#'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/war.png'
+URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/war.png'
 URL_blackout = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/blackout.png'
 URL_cyberattack = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/cyberattack.png'
 
