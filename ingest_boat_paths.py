@@ -23,7 +23,8 @@ try:
             batch_paths.set(doc_ref_paths, {
             'path_x': path_x,
             'path_y': path_y,
-            'color': [256, 0, 128] if route['in_danger'] else [0, 256, 128],
+            'color': [190, 47, 43] if route['in_danger'] else [40, 163, 130],
+            'in_danger': route['in_danger'],
             'desc': route['desc'],
             })
         batch_paths.commit()

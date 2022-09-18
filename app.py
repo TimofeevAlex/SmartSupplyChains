@@ -1,27 +1,28 @@
-import threading
-import time
 import streamlit as st
 from queue import Queue
 from google.cloud import firestore
 import pandas as pd
 import pydeck as pdk
-from prepare_routes import prepare_routes
-
+import matplotlib.pyplot as plt
 
 db = firestore.Client()
 db_paths = firestore.Client()
 q = Queue()
 q_paths = Queue()
 
-# routes = prepare_routes(True)
-# routes = pd.read_json(routes.to_json())
-
-st.title('Smart Supply Chains')
-st.subheader('Dashboard')
+st.set_page_config(page_title="Smart Supply Chains", layout="wide", page_icon='letter-m.png')
+# st.title('Smart Supply Chains')
+# st.subheader('Dashboard')
+# st.sidebar.write("""
+#             ## About
+#             The Equity Explorer is a set of Arup-designed analyses to identify vulnerable and historically under-served geographies at the census tract level. The tool provides a transparent, Arup-approved framework for approaching equity and allows users to compare indicators and explore the data for census tracts across the US. Users can also customize a transportation vulnerability index for their specific planning purposes to best understand which areas have the biggest gaps in accessibility and demand. Keep in mind that much of the data comes from the 2019 US Census which has limitations with response rates. 
+            
+#             Please note that this tool is a work in progress. Contact us [here](mailto:shannon.nakamura@arup.com) or consider contributing to our [GitHub](https://github.com/arup-group/social-data) repository with any suggestions or questions.     
+#         """)
 
 # create blank DataFrame
 df_trip = pd.DataFrame(columns=['path', 'last_pos', 'icon_data', 'timestamps'], data=None)
-df_paths = pd.DataFrame(columns=['path', 'color', 'desc'], data=None)
+df_paths = pd.DataFrame(columns=['path',  'in_danger', 'color', 'desc'], data=None)
 
 ICON_URL = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/container.png'
 icon_data = {
@@ -55,15 +56,17 @@ trip_layer = pdk.Layer(
 
 r = pdk.Deck(
   map_provider="mapbox",
-  map_style='satellite',
+  map_style='mapbox://styles/mapbox/streets-v11',
+  api_keys={'mapbox':'pk.eyJ1IjoidGltb2ZlZXZhbGV4IiwiYSI6ImNsODZlNDY0NjB6NXMzcHMybnVlNmFnMDUifQ.Y_wyQ239E1hmfQrKlXA8Wg'},
   initial_view_state=pdk.ViewState(
-    height=380,
+    height=800,
     latitude=20,
     longitude=60,
     zoom=1.5,
     pitch=0,
   ),
   layers=[trip_layer, icon_layer], 
+  height=1000
 )
 rt_map = st.pydeck_chart(r)
 
@@ -100,7 +103,7 @@ def main():
   col_ref.on_snapshot(on_snapshot)
 
   df_trip = pd.DataFrame(columns=['path', 'last_pos', 'icon_data', 'timestamps'], data=None)
-  df_paths = pd.DataFrame(columns=['path', 'color', 'desc'], data=None)
+  df_paths = pd.DataFrame(columns=['path', 'in_danger', 'color', 'desc'], data=None)
   # Paths
   doc_list_paths = q_paths.get()
   for doc in doc_list_paths:
@@ -108,6 +111,10 @@ def main():
     df_paths.at[path_ind, 'path'] = [[x, y] for x, y in zip(doc['path_x'], doc['path_y'])]
     df_paths.at[path_ind, 'color'] = doc['color']
     df_paths.at[path_ind, 'desc'] = doc['desc']
+    df_paths.at[path_ind, 'in_danger'] = doc['in_danger']
+    if doc['in_danger']:
+      st.sidebar.error(doc['desc'], icon="🚨")
+  
   trip_layer.data = df_paths
   
   while True:
@@ -130,7 +137,6 @@ def main():
         _timestamps = []
       _timestamps.append(doc['timestamp'])
       df_trip.at[vehicle_ind, 'timestamps'] = _timestamps
-    snap.write(doc_list)
     icon_layer.data = df_trip
     r.update()
     rt_map.pydeck_chart(r)
