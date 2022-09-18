@@ -4,8 +4,6 @@ import re
 import traceback
 import json
 import spacy
-import re
-import json
 from geopy.geocoders import Nominatim
 
 def get_web_risks():
