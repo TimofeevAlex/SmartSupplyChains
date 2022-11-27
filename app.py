@@ -6,9 +6,9 @@ import pydeck as pdk
 import matplotlib.pyplot as plt
 
 
-db = firestore.Client()
-db_paths = firestore.Client()
-db_cats= firestore.Client()
+db = firestore.Client(project='hackzurich-369916')
+db_paths = firestore.Client(project='hackzurich-369916')
+db_cats= firestore.Client(project='hackzurich-369916')
 q = Queue()
 q_paths = Queue()
 q_cats = Queue()
@@ -184,7 +184,7 @@ trip_layer = pdk.Layer(
 r = pdk.Deck(
   map_provider="mapbox",
   map_style='mapbox://styles/mapbox/streets-v11',
-  api_keys={'mapbox':''},
+  api_keys={'mapbox':'pk.eyJ1IjoidGltb2ZlZXZhbGV4IiwiYSI6ImNsODZlNDY0NjB6NXMzcHMybnVlNmFnMDUifQ.Y_wyQ239E1hmfQrKlXA8Wg'},
   initial_view_state=pdk.ViewState(
     height=700,
     latitude=20,
@@ -192,7 +192,18 @@ r = pdk.Deck(
     zoom=1.5,
     pitch=0,
   ),
-  layers=[trip_layer, icon_layer,fogs_layer,gales_layer,hvyrains_layer,thunderstorms_layer,strike_layer,civilunrest_layer,lockdown_layer,war_layer,blackout_layer,cyberattack_layer], 
+  layers=[trip_layer, 
+          icon_layer, 
+          fogs_layer,
+          gales_layer,
+          hvyrains_layer,
+          thunderstorms_layer,
+          strike_layer,
+          civilunrest_layer,
+          lockdown_layer,
+          war_layer,
+          blackout_layer,
+          cyberattack_layer], 
   height=1000
 )
 rt_map = st.pydeck_chart(r)

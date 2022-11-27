@@ -5,9 +5,9 @@ from google.cloud import firestore
 from prepare_routes import get_routes_and_risks, get_current_routes_and_risks,get_nature_risks
 
 
-db = firestore.Client()
-db_paths = firestore.Client()
-db_cats = firestore.Client()
+db = firestore.Client(project='hackzurich-369916')
+db_paths = firestore.Client(project='hackzurich-369916')
+db_cats = firestore.Client(project='hackzurich-369916')
 
 # cur_datetime = datetime.datetime.now()
 df_bestellu, df_shiptrac, df_bestellu_plus_raw, all_risks = get_routes_and_risks()
