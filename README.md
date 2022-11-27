@@ -4,6 +4,8 @@ Our web app is aimed to assist supply chain managers in their daily work. This i
 
 Please, feel free to play with our [demo](https://mydashboard-cauzu3pgqa-ew.a.run.app/) and try to solve some supply chain problems happening right now in the world!
 
+You can check our website [here](https://app.creatorspace.dev/gg/projects/BSRyj8Bl1kC3c60s).
+
 ## Prerequisites
 - Create a [Google Cloud project](https://cloud.google.com/docs/get-started)
 - Create a [Firestore in Native Mode](https://cloud.google.com/firestore/docs/create-database-server-client-library#create_a_in_native_mode_database)
