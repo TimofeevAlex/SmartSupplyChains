@@ -18,6 +18,9 @@ def get_web_risks():
             "pagesize": 10,
             "sort": "date",
             "direction": "DESC",
+            'hl': 'en',
+            'gl': 'us',
+            'lr': 'lang_en',
         }
         # We take news only from trusted sources. In this setting we take news only from reuters.com
         news = f"https://www.google.com/search?q={query}+site%3Areuters.com"
@@ -44,7 +47,6 @@ def get_web_risks():
             links = [x['href'][x['href'].find('https'):] for x in result.select('a') if '/url?q=' in x['href']]
             contents += [get_details(x[:x.index('&')]) for x in links]
         except Exception as e:
-            print(e)
             traceback.print_exc()
         return contents
 
@@ -54,7 +56,7 @@ def get_web_risks():
     for query in queries:
         content = news_crawler(query)
         contents[query] = content
-
+    
     # Initialize Nominatim API for geo positions parcing
     geolocator = Nominatim(user_agent="MyApp")
 
@@ -74,7 +76,7 @@ def get_web_risks():
                         places[event][loc] += 1
                     except:
                         places[event][loc] = 1
-
+        
         # delete irrelevent data: statistically insignificant places
         thrsh = 3 # Magic number
         keys_to_del = []
@@ -99,7 +101,7 @@ def get_web_risks():
             val = places[event].pop(key)
             if new_key:
                 places[event][new_key] = val
-
+    
     return places
 
 

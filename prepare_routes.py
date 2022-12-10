@@ -147,36 +147,19 @@ def get_nature_risks():
 def get_human_risks():
 
     # risks from twitter
-    # data = get_twitter_risks() - instead, we, currently, just parse hardcoded data
-    data = {'#strike': {(46.603354, 1.8883335): 27,
-                        (39.7837304, -100.445882): 12,
-                        (45.9896587, -94.6113288): 23,
-                        (47.6038321, -122.330062): 24},
-            '#civilunrest': {},
-            '#lockdown': {(35.000074, 104.999927): 71,
-                          (17.8495919, 79.1151663): 29,
-                          (22.3511148, 78.6677428): 15,
-                          (42.4804953, 85.4633464): 19,
-                          (31.2322758, 121.4692071): 12,
-                          (10.2116702, 38.6521203): 17,
-                          (30.6598628, 104.0633717): 12},
-            '#war': {(49.4871968, 31.2718321): 272,
-                     (64.6863136, 97.7453061): 294,
-                     (35.000074, 104.999927): 24,
-                     (39.7837304, -100.445882): 17,
-                     (54.7023545, -3.2765753): 11,
-                     (22.3511148, 78.6677428): 12,
-                     (49.2160489, 37.3015645): 14,
-                     (49.1913721, 37.2784125): 11,
-                     (48.2083537, 16.3725042): 18},
-            '#blackout': {(-36.8623103, 147.2748395): 69,
-                          (36.7014631, -118.755997): 18,
-                          (49.4871968, 31.2718321): 54,
-                          (64.6863136, 97.7453061): 39},
-            '#cyberattack': {
-                (64.6863136, 97.7453061): 22,
-                (39.7837304, -100.445882): 11}
-            }
+    # data = get_twitter_risks()
+    data = {'#strike': {(54.7023545, -3.2765753): 19}, 
+        '#civilunrest': {}, 
+        '#lockdown': {(35.000074, 104.999927): 52}, 
+        '#war': {(64.6863136, 97.7453061): 286, 
+                (49.4871968, 31.2718321): 258, 
+                (39.7837304, -100.445882): 15, 
+                (51.1638175, 10.4478313): 24, 
+                (48.5894123, 38.0020994): 23, 
+                (39.5162401, -76.9382069): 23}, 
+        '#blackout': {(49.4871968, 31.2718321): 18, 
+                (-36.8623103, 147.2748395): 24}, 
+        '#cyberattack': {}}
 
     # Add risks from the web
     data.update(get_web_risks())
@@ -296,7 +279,7 @@ def get_routes_and_risks():
 
 def generate_risks(long_lat_datetime, n_risks=None):
     # Generate risks for particular route
-    possible_risks_reasons = ["strike", "typhoon", "storm", "gales"]
+    possible_risks_reasons = ["#strike", "#lockdown", "#war", "typhoon", "storm", "gales"]
 
     if not n_risks:
         n_risks = random.randint(15, 20)
@@ -304,11 +287,7 @@ def generate_risks(long_lat_datetime, n_risks=None):
     risks = defaultdict(list)
     for _ in range(n_risks):
         risk_reason = random.choice(possible_risks_reasons)
-        if risk_reason in ["strike"]:
-            risk_locations = [long_lat_datetime[0], long_lat_datetime[-1]]
-        else:
-            risk_locations = long_lat_datetime[0:-1]
-
+        risk_locations = long_lat_datetime[0:-1]
         in_danger = random.choices([True, False], weights=[1, 15], k=1)[0]
         risk_location = random.choice(risk_locations)
         long, lat, risk_datetime = risk_location
