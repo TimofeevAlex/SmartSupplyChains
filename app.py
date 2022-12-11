@@ -31,6 +31,7 @@ df_lockdown = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
 df_war = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
 df_blackout = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
 df_cyberattack = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
+df_embargo = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
 
 
 ICON_URL = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/container.png'
@@ -52,6 +53,7 @@ URL_lockdown = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains
 URL_war = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/war.png' 
 URL_blackout = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/blackout.png'
 URL_cyberattack = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/cyberattack.png'
+URL_embargo = 'https://raw.githubusercontent.com/TimofeevAlex/SmartSupplyChains/main/icons/embargo.png'
 
 icon_data_fogs={"url":URL_fogs,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
 icon_data_gales={"url":URL_gales,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
@@ -63,6 +65,7 @@ icon_data_lockdown={"url":URL_lockdown,"width": 64,"height": 64,"anchorY": 96,"a
 icon_data_war={"url":URL_war,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
 icon_data_blackout={"url":URL_blackout,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
 icon_data_cyberattack={"url":URL_cyberattack,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
+icon_data_embargo={"url":URL_embargo,"width": 64,"height": 64,"anchorY": 96,"anchorX": 64}
 
 fogs_layer = pdk.Layer(
   'IconLayer',
@@ -160,6 +163,16 @@ cyberattack_layer = pdk.Layer(
   get_position=["lat","lng"]
 )
 
+embargo_layer = pdk.Layer(
+  'IconLayer',
+  data=df_embargo,
+  pickable=True,
+  get_icon='icon_data',
+  get_size=4,
+  size_scale=12,
+  get_position=["lat","lng"]
+)
+
 icon_layer = pdk.Layer(
   'IconLayer',
   data=df_trip,
@@ -203,7 +216,8 @@ r = pdk.Deck(
           lockdown_layer,
           war_layer,
           blackout_layer,
-          cyberattack_layer], 
+          cyberattack_layer,
+          embargo_layer], 
   height=1000
 )
 rt_map = st.pydeck_chart(r)
@@ -259,6 +273,7 @@ def main():
   df_war = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
   df_blackout = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
   df_cyberattack = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
+  df_embargo = pd.DataFrame(columns=['lat','lng','icon_data'], data=None)
 
   
   while True:
@@ -329,6 +344,9 @@ def main():
       df_cyberattack['lat']=doc["cyberattack_lat"]
       df_cyberattack['lng']=doc["cyberattack_lng"]
       df_cyberattack['icon_data']=[icon_data_cyberattack]*len(df_cyberattack['lng'])
+      df_embargo['lat']=doc["embargo_lat"]
+      df_embargo['lng']=doc["embargo_lng"]
+      df_embargo['icon_data']=[icon_data_embargo]*len(df_embargo['lng'])
     
       fogs_layer.data = df_fogs
       gales_layer.data = df_gales
@@ -340,6 +358,7 @@ def main():
       war_layer.data = df_war
       blackout_layer.data = df_blackout
       cyberattack_layer.data = df_cyberattack
+      embargo_layer.data = df_embargo
 
 
 if __name__ == "__main__":

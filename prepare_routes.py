@@ -148,7 +148,7 @@ def get_human_risks():
 
     # Add risks from the web
     # data = get_web_risks()
-    data = {'strike': {(54.31536155, -1.9180234948012402): 15},
+    data_web = {'strike': {(54.31536155, -1.9180234948012402): 15},
         'cyberattack': {(23.9739374, 120.9820179): 26,
         (35.000074, 104.999927): 20,
         (48.684055799999996, 9.009657397144327): 12,
@@ -181,8 +181,14 @@ def get_human_risks():
                 (-36.8623103, 147.2748395): 24}, 
         'cyberattack': {}}
 
-    data.update(data_twitter)
-    data = {k: v for k, v in data.items() if v}
+    keys = set(data_web.keys()) | set(data_twitter.keys())
+    data = {}
+    for key in keys:
+        data[key] = {}
+        for d in [data_web, data_twitter]:
+            if key in d:
+                for v in d[key]:
+                    data[key][v] = d[key][v]
 
     # Structure on the same way as nature risks
     data = {k: list(v.keys()) for k, v in data.items()}

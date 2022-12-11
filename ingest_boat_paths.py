@@ -2,7 +2,7 @@ import datetime
 import numpy as np
 import pandas as pd
 from google.cloud import firestore
-from prepare_routes import get_routes_and_risks, get_current_routes_and_risks,get_nature_risks
+from prepare_routes import get_routes_and_risks, get_current_routes_and_risks, get_nature_risks
 
 
 db = firestore.Client(project='hackzurich-369916')
@@ -162,7 +162,9 @@ try:
                                     "blackout_lat":blackout_lat,
                                     "blackout_lng":blackout_lng,
                                     "cyberattack_lat":cyberattack_lat,
-                                    "cyberattack_lng":cyberattack_lng
+                                    "cyberattack_lng":cyberattack_lng,
+                                    "embargo_lat":embargo_lat,
+                                    "embargo_lng":embargo_lng,
                                     })
 
         batch_cats.commit()
