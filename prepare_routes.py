@@ -150,19 +150,19 @@ def get_human_risks():
     data = get_web_risks()
 
     # risks from twitter
-    # data_twitter = get_twitter_risks()
-    data_twitter = {'strike': {(54.7023545, -3.2765753): 19}, 
-        'civilunrest': {}, 
-        'lockdown': {(35.000074, 104.999927): 52}, 
-        'war': {(64.6863136, 97.7453061): 286, 
-                (49.4871968, 31.2718321): 258, 
-                (39.7837304, -100.445882): 15, 
-                (51.1638175, 10.4478313): 24, 
-                (48.5894123, 38.0020994): 23, 
-                (39.5162401, -76.9382069): 23}, 
-        'blackout': {(49.4871968, 31.2718321): 18, 
-                (-36.8623103, 147.2748395): 24}, 
-        'cyberattack': {}}
+    data_twitter = get_twitter_risks()
+    # data_twitter = {'strike': {(54.7023545, -3.2765753): 19}, 
+    #     'civilunrest': {}, 
+    #     'lockdown': {(35.000074, 104.999927): 52}, 
+    #     'war': {(64.6863136, 97.7453061): 286, 
+    #             (49.4871968, 31.2718321): 258, 
+    #             (39.7837304, -100.445882): 15, 
+    #             (51.1638175, 10.4478313): 24, 
+    #             (48.5894123, 38.0020994): 23, 
+    #             (39.5162401, -76.9382069): 23}, 
+    #     'blackout': {(49.4871968, 31.2718321): 18, 
+    #             (-36.8623103, 147.2748395): 24}, 
+    #     'cyberattack': {}}
 
     data.update(data_twitter)
     data = {k: v for k, v in data.items() if v}
@@ -337,14 +337,14 @@ def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
 
         # Annotate routes with in_danger
         if simulate:
-            all_risks = generate_risks(long_lat_datetime)
-
+            gen_risks = generate_risks(long_lat_datetime)
+        
         in_danger = False
         desc = ""
-        for key in all_risks.keys():
+        for key in gen_risks.keys():
             if in_danger:  # Look for the closest risks
                 break
-            in_danger, desc = check_if_route_is_in_danger(long_lat_datetime, all_risks[key], risk_title=key)
+            in_danger, desc = check_if_route_is_in_danger(long_lat_datetime, gen_risks[key], risk_title=key)
 
         if in_danger:
             desc = find_another_supplier(df_bestellu=df_bestellu, route_info=route_info, desc=desc)
