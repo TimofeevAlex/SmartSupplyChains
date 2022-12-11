@@ -68,51 +68,51 @@ try:
         fogs_lng=[]
         if "fogs" in all_risks.keys():
             for i in all_risks["fogs"]:
-                fogs_lat.append(i[1])
-                fogs_lng.append(i[2])
+                fogs_lat.append(i[2])
+                fogs_lng.append(i[1])
 
         gales_lat=[]
         gales_lng=[]
         if "gales" in all_risks.keys():
             for i in all_risks["gales"]:
-                gales_lat.append(i[1])
-                gales_lng.append(i[2])
+                gales_lat.append(i[2])
+                gales_lng.append(i[1])
 
         hvyrains_lat=[]
         hvyrains_lng=[]
         if "hvyrains" in all_risks.keys():
             for i in all_risks["hvyrains"]:
-                hvyrains_lat.append(i[1])
-                hvyrains_lng.append(i[2])
+                hvyrains_lat.append(i[2])
+                hvyrains_lng.append(i[1])
 
         thunderstorms_lat=[]
         thunderstorms_lng=[]
         if "thunderstorms" in all_risks.keys():
             for i in all_risks["thunderstorms"]:
-                thunderstorms_lat.append(i[1])
-                thunderstorms_lng.append(i[2])
+                thunderstorms_lat.append(i[2])
+                thunderstorms_lng.append(i[1])
 
         #Twitter
         strike_lat=[]
         strike_lng=[]
         if "strike" in all_risks.keys():
             for i in all_risks["strike"]:
-                strike_lat.append(i[1])
-                strike_lng.append(i[2])
+                strike_lat.append(i[2])
+                strike_lng.append(i[1])
 
         civilunrest_lat=[]
         civilunrest_lng=[]
         if "civilunrest" in all_risks.keys():
             for i in all_risks["civilunrest"]:
-                civilunrest_lat.append(i[1])
-                civilunrest_lng.append(i[2])
+                civilunrest_lat.append(i[2])
+                civilunrest_lng.append(i[1])
 
         lockdown_lat=[]
         lockdown_lng=[]
         if "lockdown" in all_risks.keys():
             for i in all_risks["lockdown"]:
-                lockdown_lat.append(i[1])
-                lockdown_lng.append(i[2])
+                lockdown_lat.append(i[2])
+                lockdown_lng.append(i[1])
 
         war_lat=[]
         war_lng=[]
@@ -125,22 +125,22 @@ try:
         blackout_lng=[]
         if "blackout" in all_risks.keys():
             for i in all_risks["blackout"]:
-                blackout_lat.append(i[1])
-                blackout_lng.append(i[2])
+                blackout_lat.append(i[2])
+                blackout_lng.append(i[1])
 
         cyberattack_lat=[]
         cyberattack_lng=[]
         if "cyberattack" in all_risks.keys():
             for i in all_risks["cyberattack"]:
-                cyberattack_lat.append(i[1])
-                cyberattack_lng.append(i[2])
+                cyberattack_lat.append(i[2])
+                cyberattack_lng.append(i[1])
         
         embargo_lat=[]
         embargo_lng=[]
         if "embargo" in all_risks.keys():
             for i in all_risks["embargo"]:
-                embargo_lat.append(i[1])
-                embargo_lng.append(i[2])
+                embargo_lat.append(i[2])
+                embargo_lng.append(i[1])
 
         batch_cats.set(doc_ref_cats, {"timestamp":ts,
                                     "fogs_lat":fogs_lat,
