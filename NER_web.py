@@ -78,7 +78,7 @@ def get_web_risks():
                         places[event][loc] = 1
         
         # delete irrelevent data: statistically insignificant places
-        thrsh = 3 # Magic number
+        thrsh = 10 # Magic number
         keys_to_del = []
         for key in places[event].keys():
             if places[event][key] <= thrsh:
