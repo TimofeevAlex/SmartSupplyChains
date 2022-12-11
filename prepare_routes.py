@@ -341,10 +341,10 @@ def get_current_routes_and_risks(df_bestellu, df_shiptrac, df_bestellu_plus_raw,
         
         in_danger = False
         desc = ""
-        for key in gen_risks.keys():
+        for key in all_risks.keys():
             if in_danger:  # Look for the closest risks
                 break
-            in_danger, desc = check_if_route_is_in_danger(long_lat_datetime, gen_risks[key], risk_title=key)
+            in_danger, desc = check_if_route_is_in_danger(long_lat_datetime, all_risks[key], risk_title=key)
 
         if in_danger:
             desc = find_another_supplier(df_bestellu=df_bestellu, route_info=route_info, desc=desc)
