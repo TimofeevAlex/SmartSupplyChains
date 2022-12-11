@@ -44,12 +44,12 @@ def get_twitter_risks():
 
     # hashtags we use to retrieve data from Twitter
     hashtags = [
-        '#strike',
-        '#civilunrest',
-        '#lockdown',
-        '#war',
-        '#blackout',
-        '#cyberattack'
+        'strike',
+        'civilunrest',
+        'lockdown',
+        'war',
+        'blackout',
+        'cyberattack'
     ]
 
     # Number of tweets we retrieve
@@ -59,7 +59,7 @@ def get_twitter_risks():
     tweets = {}
     # Retrieve the tweets with given hashtag
     for hashtag in hashtags:
-        query = hashtag + ' -is:retweet lang:en'
+        query = '#' + hashtag + ' -is:retweet lang:en'
         paginator = tweepy.Paginator(
             client.search_recent_tweets,
             query=query,
