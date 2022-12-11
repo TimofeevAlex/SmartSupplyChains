@@ -146,23 +146,26 @@ def get_nature_risks():
 
 def get_human_risks():
 
+    # Add risks from the web
+    data = get_web_risks()
+
     # risks from twitter
-    # data = get_twitter_risks()
-    data = {'#strike': {(54.7023545, -3.2765753): 19}, 
-        '#civilunrest': {}, 
-        '#lockdown': {(35.000074, 104.999927): 52}, 
-        '#war': {(64.6863136, 97.7453061): 286, 
+    # data_twitter = get_twitter_risks()
+    data_twitter = {'strike': {(54.7023545, -3.2765753): 19}, 
+        'civilunrest': {}, 
+        'lockdown': {(35.000074, 104.999927): 52}, 
+        'war': {(64.6863136, 97.7453061): 286, 
                 (49.4871968, 31.2718321): 258, 
                 (39.7837304, -100.445882): 15, 
                 (51.1638175, 10.4478313): 24, 
                 (48.5894123, 38.0020994): 23, 
                 (39.5162401, -76.9382069): 23}, 
-        '#blackout': {(49.4871968, 31.2718321): 18, 
+        'blackout': {(49.4871968, 31.2718321): 18, 
                 (-36.8623103, 147.2748395): 24}, 
-        '#cyberattack': {}}
+        'cyberattack': {}}
 
-    # Add risks from the web
-    data.update(get_web_risks())
+    data.update(data_twitter)
+    data = {k: v for k, v in data.items() if v}
 
     # Structure on the same way as nature risks
     data = {k: list(v.keys()) for k, v in data.items()}
@@ -279,7 +282,7 @@ def get_routes_and_risks():
 
 def generate_risks(long_lat_datetime, n_risks=None):
     # Generate risks for particular route
-    possible_risks_reasons = ["#strike", "#lockdown", "#war", "typhoon", "storm", "gales"]
+    possible_risks_reasons = ["strike", "lockdown", "war", "typhoon", "storm", "gales"]
 
     if not n_risks:
         n_risks = random.randint(15, 20)

@@ -55,7 +55,7 @@ def get_web_risks():
     contents = {}
     for query in queries:
         content = news_crawler(query)
-        contents[query] = content
+        contents[query.replace('+', '')] = content
     
     # Initialize Nominatim API for geo positions parcing
     geolocator = Nominatim(user_agent="MyApp")
